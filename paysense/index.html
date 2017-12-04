@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Autocomplete</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+  <style>
+    .container {
+      padding-top: 2rem;
+      max-width: 768px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Type your query..</h2>
+    <br>
+    <!-- <select class="js-data-example-ajax form-control"></select> -->
+    <!-- <input class="form-control" id="input_data" type="text"> -->
+
+
+    <input type="text" class="form-control" id="input_data" name="city" list="name">
+    <datalist id="name">
+      
+    </datalist>
+  </div>
+
+  <script>
+    $(function(){
+      $("#input_data").keypress(function(){
+        var input_data = this.value;
+        if(input_data.length > 2){
+          $.ajax({url: "http://127.0.0.1:8000/auto?q="+input_data, 
+                  success: function(result){
+                    $("#name").empty()
+                    $.each(result.results, function( index, value ) {
+                      // alert( index + ": " + value );
+
+                      $("#name").append( "<option value='"+value+"'>")
+                    });
+                                       
+      
+                  console.log(result,"====")
+          }});
+        }
+        
+      });
+    });
+    // $('.js-data-example-ajax').select2({
+    //   ajax: {
+    //     url: 'http://127.0.0.1:8888/auto',
+    //     dataType: 'json'
+    //   },
+    //   templateResult: function(e) { return e.name; },
+    //   templateSelection: function(e) { return e.name; }
+    // });
+  </script>
+</body>
+</html>
